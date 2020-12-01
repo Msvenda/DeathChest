@@ -33,7 +33,7 @@ import com.bwroleplay.bwtime.TimeManagement;
 
 public class DeathChest extends JavaPlugin implements Listener{
 
-	private static final String propertiesFile = "plugins/BWRPDeathChest/config.yml";
+	private static final String propertiesFile = "plugins/BWDeathChest/config.yml";
 	private HashMap<UUID, String> deathCauses;
 	private List<UUID> worlds;
 	
