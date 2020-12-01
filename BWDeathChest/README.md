@@ -17,6 +17,6 @@
 
 <p>
 <code>
-worlds: [] #list of uid's of excluded worlds, populated through doTimeHere command.</br>
+worlds: [] #list of uid's of excluded worlds, populated through doDeathHere command.</br>
 </code>
 </p>
