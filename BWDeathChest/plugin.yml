@@ -1,0 +1,13 @@
+name: BWRPDeathChest
+main: com.bwroleplay.bwrpdeathchest.DeathChest
+version: 1.0
+api-version: 1.15
+author: MX26
+description: "On player death, spawns chest with inventory and time of death"
+depend: [BWTimeManagement]
+commands:
+  doDeathHere:
+    description: "enables or disables death chests in world"
+    permission: deathchest.manager
+    permission-message: "You cannot use this command."
+    usage: "/doDeathHere [boolean]"
