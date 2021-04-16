@@ -64,36 +64,46 @@ public class OnDeathListener implements Listener {
         Inventory chestInv = chest.getBlockInventory();
 
 
-        //fill chest (armor -> hotbar -> offhand -> inv)
+        //get dropped items (armor -> hotbar -> offhand -> inv)
+        List<ItemStack> chestItems = new ArrayList<>();
+
+        //armor slots
         for(ItemStack i : inv.getArmorContents()) {
             if(i != null) {
-                chestInv.addItem(i);
+                chestItems.add(i);
             }
         }
 
-        {
-            ItemStack i = inv.getItemInOffHand();
-            if(i != null) {
-                chestInv.addItem(i);
-            }
+        //offhand
+        ItemStack offHandItem = inv.getItemInOffHand();
+        if(offHandItem != null) {
+            chestItems.add(offHandItem);
         }
 
+        //hotbar
         for(int i = 0; i < 9; i++) {
             if(inv.getItem(i) != null) {
-                chestInv.addItem(inv.getItem(i));
+                chestItems.add(inv.getItem(i));
             }
         }
 
-        ArrayList<ItemStack> droppedItems = new ArrayList<>();
+        //inventory
         for(int i = 35; i > 8; i--) {
             if(inv.getItem(i) != null) {
-                droppedItems.addAll(chestInv.addItem(inv.getItem(i)).values());
+                chestItems.add(inv.getItem(i));
             }
         }
+
+        //put items in inv, get list of excess items
+        ArrayList<ItemStack> droppedItems = new ArrayList<>();
+        for(ItemStack chestItem : chestItems){
+            droppedItems.addAll(chestInv.addItem(chestItem).values());
+        }
+
+        //drop excess items
         for(ItemStack i : droppedItems) {
             loc.getWorld().dropItem(loc, i);
         }
-
 
         //place sign
         loc.setY(loc.getY()+1);
@@ -102,14 +112,22 @@ public class OnDeathListener implements Listener {
             loc.getWorld().dropItem(loc, i);
         }
         loc.getBlock().setType(Material.OAK_SIGN);
+        if(loc.getBlock().getType().equals(Material.OAK_SIGN)){
 
-        Sign s = (Sign) loc.getBlock().getState();
-        s.setLine(0, p.getDisplayName());
-        s.setLine(1, "Died to " + cause);
-        s.setLine(2, "Died on:");
-        String l3 = String.format("%s of %d", timePlugin.getDataLayer().getServerTime().getMonthByName(), timePlugin.getDataLayer().getServerTime().getYear());
-        s.setLine(3, l3);
-        s.update();
+            Sign s = (Sign) loc.getBlock().getState();
+            s.setLine(0, p.getDisplayName());
+            s.setLine(1, "Died to " + cause);
+            s.setLine(2, "Died on:");
+            String l3 = String.format("%s of %d",
+                    timePlugin.getDataLayer().getServerTime().getMonthByName(),
+                    timePlugin.getDataLayer().getServerTime().getYear(),
+                    timePlugin);
+            s.setLine(3, l3);
+            s.update();
+        }
+        else{
+            Bukkit.getLogger().info("Error, sign not found");
+        }
     }
 
 
