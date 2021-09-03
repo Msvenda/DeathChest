@@ -158,7 +158,7 @@ public class OnDeathListener implements Listener {
 
     private boolean isOkToReplace(Location loc) {
         Material mat = loc.getBlock().getType();
-        if(mat.isSolid()) {
+        if(mat.isSolid() || mat.equals(Material.WATER)) {
             return false;
         }
         return true;
